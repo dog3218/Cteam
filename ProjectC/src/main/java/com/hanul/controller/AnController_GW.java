@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartRequest;
 
 import com.google.gson.Gson;
 
+import board.BoardDAO_GM;
 import board.BoardDAO_GW;
 import board.BoardVO;
 import member.MemberDAO_GW;
@@ -31,6 +32,9 @@ public class AnController_GW {
 	
 	@Autowired MemberDAO_GW member_gw;
 	@Autowired BoardDAO_GW board_gw;
+	@Autowired BoardDAO_GM board_gm;
+	
+	List<BoardVO> nearEventdtos;
 	
 	@RequestMapping("/anIdCheck")
 	public void anIdCheck(String email, HttpServletResponse response) {
@@ -190,6 +194,34 @@ public class AnController_GW {
 			e.printStackTrace();
 		}
 		
+		
+	}
+	
+	@RequestMapping("/nearLocationSelect_app")
+	public void nearLoacationSelect(String currentLangitude, String currentLatitude, HttpServletRequest req, HttpServletResponse res) {
+		System.out.println("주변 행사 검색");
+			Double lang = Double.parseDouble(currentLatitude);/*	currentLangitude 35.153356;*/ 
+		
+		
+			
+			
+			Double lati =Double.parseDouble(currentLangitude); /*  126.887881;  */
+			
+		System.out.println("lagn : "+ lang +" , lati : "+lati);
+		nearEventdtos = new ArrayList<BoardVO>();
+		nearEventdtos = member_gw.nearEventList(lang, lati);
+		
+		Gson gson = new Gson();
+		String json = gson.toJson(nearEventdtos);
+		PrintWriter out;
+		// 클라이언트에게 응답
+		try {
+			out = res.getWriter();
+			out.println(json);	
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	

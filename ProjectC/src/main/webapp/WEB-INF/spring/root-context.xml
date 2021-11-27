@@ -11,7 +11,7 @@
 
 	<import resource="classpath:data/*.xml" />
 	
-	<context:component-scan base-package="board, common, notice, community, member, qna" />
+	<context:component-scan base-package="board, common, notice, community, member, qna, auth" />
 		
 </beans>
 

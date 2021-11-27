@@ -50,7 +50,18 @@ public class BoardDAO_ES {
 		}
 		return list;
 	}
+	public List<BoardVO> board_favorite() {
+	      return sql.selectList("board.mapper.favorite_es");
+	   }
+	   
+	   public List<BoardVO> board_review() {
+	      return sql.selectList("board.mapper.review_es");
+	   }
 
+	   public List<BoardVO> board_read() {
+	      return sql.selectList("board.mapper.read_es");
+	   }
+	   
 	public int es_board_insert(BoardVO vo) {
 		return 0;
 	}

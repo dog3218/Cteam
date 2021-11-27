@@ -74,4 +74,8 @@
 		insert into member (nickname, password, address, email, idnumber, name)
 		values ( #{nickname}, #{password}, #{address}, #{email}, #{idnumber}, #{name})	
 	</insert>
+	
+	<delete id="member_delete_jy">
+      delete from member where email = #{email}
+   </delete>
 </mapper>

@@ -72,4 +72,22 @@
 		or eventco like  '%재즈%'
 		order by eventnm
 	</select>
+	
+	<select id="read_es" resultType="board.BoardVO">
+      select *
+      from board 
+      order by readcnt
+   </select>
+   
+   <select id="review_es" resultType="board.BoardVO">
+      select b.*, (select content from comments where comments.writer = b.writer) content
+      from board b
+      order by content
+   </select>
+   
+   <select id="favorite_es" resultType="board.BoardVO">
+      select b.*, (select like_type from favorite) like_type
+      from board b
+      order by like_type
+   </select>
 </mapper>

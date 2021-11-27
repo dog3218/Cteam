@@ -9,17 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import board.BoardVO;
+
 
 @Repository
 public class MemberDAO_GW{
 	
 		@Autowired @Qualifier("cteam") SqlSession sql;
+		List<BoardVO> nearEventdtos = new ArrayList<BoardVO>();
 	
 		
 		//8. 로그인 : anLoginCommand에서 값을 넘겨받는다
 		public MemberVO member_login(HashMap<String, String> map) {
-			
-			return sql.selectOne("member.mapper.login_app_gw", map);
+			MemberVO vo =sql.selectOne("member.mapper.login_app_gw", map);
+			return vo;
 		}
 		
 		
@@ -80,8 +83,46 @@ public class MemberDAO_GW{
 			// TODO Auto-generated method stub
 			return sql.selectOne("member_gw.mapper.id_check_app_gw", email);
 		}
-
 		
+		
+
+		public List<BoardVO> nearEventList(Double lang, Double lati) {
+			
+			List<BoardVO> list = new ArrayList<BoardVO>();
+			
+			list = sql.selectList("board.mapper.all_gm");
+			nearEventdtos.clear();
+			System.out.println(nearEventdtos.size());
+			for(int i = 0; i<list.size(); i++) {
+				System.out.println(nearEventdtos.size());
+				if(list.get(i).getLatitude()!=null||list.get(i).getLongitude()!=null) {
+					
+					Double distance = getDistance(lang, lati, 
+							Double.parseDouble(list.get(i).getLatitude()), Double.parseDouble(list.get(i).getLongitude()));
+					
+					if(distance<0.4) {
+						System.out.println(i+"까지의 거리 " + distance);
+						nearEventdtos.add(list.get(i));
+					}
+					
+						
+					}
+				}
+			for(int i = 0; i<nearEventdtos.size(); i++) {
+				System.out.println(nearEventdtos.get(i).getRdnmadr()+", "+nearEventdtos.get(i).getLnmadr());
+			}
+				
+			
+			return nearEventdtos;
+		}
+
+		//두 점 간의 거리 구하기
+				public double getDistance (Double x, Double y, Double x1,Double y1){
+					System.out.println(x+", " + y + ", "+x1+", "+ y1);
+					
+					return Math.sqrt(Math.pow(Math.abs(x1-x), 2) + Math.pow(Math.abs(y1-y), 2));
+					}
+
 
 }
 
