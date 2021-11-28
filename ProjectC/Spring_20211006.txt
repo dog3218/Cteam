@@ -1,0 +1,10 @@
+
+▶ form 태그의 입력값을 서버에 전송하고, form 태그를 통해 전송된 데이터에 접근시..
+1. HttpServleRequest 방식
+2. @RequestParam 방식    ★
+3. 데이터 객체(VO) 방식  ★★
+4. @PathVariable 방식 : 여러 데이터보단 하나의 데이터 접근시 유용
+
+▶화면 연결 형태
+1. forward 방식 : (return "home")
+2. redirect 방식 : (return "redirect:/")
