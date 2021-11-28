@@ -15,7 +15,7 @@
 		<div>
 			<!-- 검색 처리 -->
 			<ul>
-				<li>
+				<li> 
 					<select name="search" class='w-px90'>
 						<option value="all" ${page.search eq 'all' ? 'selected' : '' }>전체</option>
 						<option value="subject" ${page.search eq 'subject' ? 'subject' : '' }>말머리</option>

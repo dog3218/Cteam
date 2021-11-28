@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style type="text/css">
+<style type="text/css"> 
 table tr td {text-align: left;}
 .addr input(:last-child) {margin-bottom: 5px;}
 .addr input[name=addr] {width: calc(100% - 25px)}
@@ -96,7 +96,7 @@ table tr td {text-align: left;}
 			return;
 		}
 		
-		// 이메일 중복확인 해서 이미 사용 중인 경우
+		// 중복확인 해서 이미 사용 중인 경우
 		if ($('[name=email]').hasClass('checked') ){
 			if ( ($('[name=email]').siblings('div').hasClass('invalid')) ) {
 				alert('회원가입 불가! \n' + join.email.unUsable.desc);
@@ -104,31 +104,11 @@ table tr td {text-align: left;}
 				return;
 			}
 		} else {
-		// 이메일 중복확인 하지 않은 경우
+		// 중복확인 하지 않은 경우
 			if (! item_check ($('[name=email]')) ) return;
 			else {
 				alert('회원가입 불가!\n' + join.email.valid.desc);
 				$('[name=email]').focus();
-				return;
-			}
-		}if ($('[name=name]').val() == '') {
-			$('[name=name]').focus();
-			return;
-		}
-		
-		// 닉네임 중복확인 해서 이미 사용 중인 경우
-		if ($('[name=nickname]').hasClass('checked') ){
-			if ( ($('[name=nickname]').siblings('div').hasClass('invalid')) ) {
-				alert('회원가입 불가! \n' + join.nickname.unUsable.desc);
-				$('[name=nickname]').focus();
-				return;
-			}
-		} else {
-		// 닉네임 중복확인 하지 않은 경우
-			if (! item_check ($('[name=nickname]')) ) return;
-			else {
-				alert('회원가입 불가!\n' + join.nickname.valid.desc);
-				$('[name=nickname]').focus();
 				return;
 			}
 		}

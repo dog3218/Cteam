@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
     
 <!-- tiles 라이브러리를 사용할 수 있도록 선언 -->
-<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>     
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>    
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:choose>
 	<c:when test="${category eq 'info' }"><c:set var="title" value="공연정보"/> </c:when>
@@ -12,7 +12,7 @@
 </c:choose>
 
 <!DOCTYPE html>
-<html>
+<html> 
 <head>
 <meta charset="UTF-8">
 <title>${title } </title>

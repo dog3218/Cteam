@@ -19,7 +19,7 @@
 				<option value='동행구해요' >동행구해요</option>
 				<option value='자유' >자유</option>
 			</select></td>
-		</tr>
+		</tr> 
 		<tr>
 			<th class='w-px120'>제목</th>
 			<td>

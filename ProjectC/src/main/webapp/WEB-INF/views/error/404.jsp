@@ -5,7 +5,7 @@
 	<div class='left' style = 'heigth:60px;'>
 		<a href = '<c:url value="/" /> '><img src='imgs/exhibition_logo.png' /></a>
 	</div>
-	<hr />
+	<hr /> 
 	<div class='left'>
 		<h3>죄송합니다. 요청하신 페이지를 찾을 수 없습니다.</h3>
 		<pre>방문하시려는 페이지의 주소가 잘못 입력되었거나</pre>

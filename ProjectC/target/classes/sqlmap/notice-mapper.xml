@@ -24,7 +24,7 @@
 </update>
 
 <!-- 해당 글의 상세 정보 조회 -->
-<select id="detail_mj" resultType="notice.NoticeVO">
+<select id="detail_mj" resultType="web_notice.NoticeVO">
 	select b.*, (select name from member where member.email = b.writer) name
 	from notice b
 	where id = #{id}
@@ -62,7 +62,7 @@
 
 <!-- 전체 게시글 조회 -->
 
-<select id="list_mj" resultType="notice.NoticeVO">
+<select id="list_mj" resultType="web_notice.NoticeVO">
 	select *
 	from (select rownum no, b.*, (select name from member where email = b.writer) name
 			from (select * from notice <include refid="where_search" />

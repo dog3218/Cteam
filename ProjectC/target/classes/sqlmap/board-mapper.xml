@@ -14,31 +14,31 @@
 			   #{suprtInstt}, #{seatNumber}, #{admfee}, #{entncAge}, #{dscntInfo}, #{atpn}, #{homepageUrl}, #{advantkInfo}, #{prkplceYn}, #{rdnmadr}, #{lnmadr}, #{latitude}, #{longitude}, #{referenceDate} )
 	</insert>
 	
-	<select id="board_list_gw" resultType="board.BoardVO">
+	<select id="board_list_gw" resultType="app_board.BoardVO">
 		select * from board
 	</select>
 	
-	<select id="all_gm" resultType="board.BoardVO">
+	<select id="all_gm" resultType="app_board.BoardVO">
 		select * 
 		from board
 		order by eventnm
 	</select>
 	
-	<select id="musical_gm" resultType="board.BoardVO">
+	<select id="musical_gm" resultType="app_board.BoardVO">
 		select * 
 		from board
 		where eventco like '%뮤지컬%'
 		order by eventnm
 	</select>
 
-	<select id="opera_gm" resultType="board.BoardVO">
+	<select id="opera_gm" resultType="app_board.BoardVO">
 		select * 
 		from board
 		where eventco like '%오페라%'
 		order by eventnm
 	</select>
 	
-	<select id="play_gm" resultType="board.BoardVO">
+	<select id="play_gm" resultType="app_board.BoardVO">
 		select * 
 		from board
 		where eventco like '%연극%'
@@ -48,7 +48,7 @@
 		order by eventnm
 	</select>
 	
-	<select id="exhibition_gm" resultType="board.BoardVO">
+	<select id="exhibition_gm" resultType="app_board.BoardVO">
 		select * 
 		from board
 		where eventco like '%전시회%'
@@ -59,7 +59,7 @@
 		order by eventnm
 	</select>
 	
-	<select id="concert_gm" resultType="board.BoardVO">
+	<select id="concert_gm" resultType="app_board.BoardVO">
 		select * 
 		from board
 		where eventco like '%음악회%'
@@ -72,4 +72,22 @@
 		or eventco like  '%재즈%'
 		order by eventnm
 	</select>
+	
+	<select id="read_es" resultType="app_board.BoardVO">
+      select *
+      from board 
+      order by readcnt
+   </select>
+   
+   <select id="review_es" resultType="app_board.BoardVO">
+      select b.*, (select content from comments where comments.writer = b.writer) content
+      from board b
+      order by content
+   </select>
+   
+   <select id="favorite_es" resultType="app_board.BoardVO">
+      select b.*, (select like_type from favorite) like_type
+      from board b
+      order by like_type
+   </select>
 </mapper>

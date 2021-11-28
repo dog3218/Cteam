@@ -4,7 +4,7 @@
 	<div class='left' style = 'heigth:60px;'>
 		<a href = '<c:url value="/" /> '><img src='imgs/exhibition_logo.png' /></a>
 	</div>
-	<hr />
+	<hr /> 
 	<div class='left'>
 		<h3>내부적인 오류가 발생했습니다.</h3>
 		<pre>빠른 시일내에 오류를 해결해 복구시키도록 하겠습니다.</pre>

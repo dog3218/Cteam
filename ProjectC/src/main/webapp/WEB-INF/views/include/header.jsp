@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-
+ 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
  <!-- Sidebar -->
             <div class="border-end bg-white" id="sidebar-wrapper">
@@ -15,11 +15,13 @@
                     <a class="list-group-item list-group-item-action list-group-item-light p-3
                     ${category eq 'qna' ? 'active' : ''}" href="list.qna">QnA</a>
                     <!-- 로그인 한 경우 -->
-                    <c:if test="${!empty loginInfo }">
+                    <c:if test="${loginInfo.type eq 'user' }">
                     <a class="list-group-item list-group-item-action list-group-item-light p-3
                     ${category eq 'my' ? 'active' : ''}" href="list.my">마이페이지</a>
+                    </c:if>
+                    <c:if test="${loginInfo.type eq 'admin'}">
                     <a class="list-group-item list-group-item-action list-group-item-light p-3
-                    ${category eq 'fav' ? 'active' : ''}" href="list.fav">좋아요</a>
+                    ${category eq 'admin' ? 'active' : ''}" href="mypage.admin">마이페이지</a>
                     </c:if>
  <!--                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Status</a>
@@ -39,7 +41,7 @@
                             	<!-- 로그인을 하지 않은 경우 -->
                             	<c:if test="${empty loginInfo }">
                                		<li class="nav-item active"><a class="nav-link" href="login">로그인</a></li>
-                                	<li class="nav-item"><a class="nav-link" href="member">회원가입</a></li>
+                                	<li class="nav-item"><a class="nav-link" href="member_join">회원가입</a></li>
                                </c:if>
                                <!-- 로그인을 한 경우 -->
                             	<c:if test="${!empty loginInfo }">

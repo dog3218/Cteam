@@ -14,7 +14,7 @@
 			<th>제목</th>
 			<td class='left middle'><input type="text" name='title' title='제목' class='chk' /></td>
 		</tr>
-		<tr>
+		<tr> 
 			<th>내용</th>
 			<td><textarea name='content' title='내용' class='chk' ></textarea></td>
 		</tr>

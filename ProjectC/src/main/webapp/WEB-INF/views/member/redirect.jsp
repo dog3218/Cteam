@@ -8,7 +8,7 @@
 	<input type="hidden" name='keyword' value="${page.keyword }" />
 	<input type="hidden" name='viewType' value="${page.viewType }" />
 </form>
-<script>
+<script> 
 	$('form').submit();
 
 

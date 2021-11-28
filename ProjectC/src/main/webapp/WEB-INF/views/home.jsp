@@ -14,7 +14,7 @@
 		   box-sizing: border-box; 
 		   border-radius: 50%;
 		   margin-right: 200px;
-		   font-size: x-large;
+		   font-size: x-large; 
 		   margin: 0px auto;
 		   }
 		   

@@ -16,7 +16,7 @@
 	#comment_regist span { width: 50%; float: left; }
 	
 	textarea#comment { width: 96%; height: 60px; margin-top: 5px; resize: none; }
-</style>
+</style> 
 
 
 </head>

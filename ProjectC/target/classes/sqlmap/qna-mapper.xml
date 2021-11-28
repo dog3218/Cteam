@@ -45,7 +45,7 @@
 	</update>
 
 	<!-- QnA글 상세 내용 조회 -->
-	<select id="detail" resultType="qna.QnaVO">
+	<select id="detail" resultType="web_qna.QnaVO">
 		select qna.*, ( select name from member where member.id = qna.writer ) name 
 		from qna
 		where id = #{id}
@@ -86,7 +86,7 @@
 	</select>
 
 	<!-- 페이지 처리된 글 목록 조회 -->	
-	<select id="list" resultType="qna.QnaVO">
+	<select id="list" resultType="web_qna.QnaVO">
 		select * 
 		from (select rownum no, n.*, ( select name from member where member.email = writer ) name 
 				from ( select * from qna <include refid="where_search" /> 

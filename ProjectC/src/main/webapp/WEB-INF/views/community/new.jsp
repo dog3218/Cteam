@@ -19,7 +19,7 @@
 				<option value='자유' >자유</option>
 			
 			</select></td>
-		</tr>
+		</tr> 
 		<tr>
 			<th>제목</th>
 			<td class='left middle'><input type="text" name='title' title='제목' class='chk' /></td>

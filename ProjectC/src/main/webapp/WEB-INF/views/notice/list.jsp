@@ -44,7 +44,7 @@
 						<option value='grid' ${page.viewType eq 'grid' ? 'selected' : '' }>그리드 형태</option>
 					</select>
 				</li>
-				<c:if test="${ not empty loginInfo }">
+				<c:if test="${loginInfo.email eq 'admin@naver.com' }">
 					<li><a class='btn-fill' href='new.no'>글쓰기</a></li>
 				</c:if>
 			</ul>	

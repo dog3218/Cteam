@@ -6,8 +6,8 @@
 	<c:when test="${category eq 'error' }"><c:set var="title" value="오류" /></c:when>
 </c:choose>
 
-<!DOCTYPE html> 
-<html>
+<!DOCTYPE html>
+<html> 
 <head>
 <meta charset="UTF-8">
 <title>${title }</title>

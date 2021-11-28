@@ -17,7 +17,7 @@
 <form action="reply_insert.qna" method="post" enctype="multipart/form-data" >
 	<!-- 답글에 필요한 root, step, indent 값을 hidden 으로 전달 -->
 	<input type="hidden" name="root" value="${vo.root }" />
-	<table>
+	<table> 
 		<tr>
 			<th>제목</th>
 			<td><input type="text" name='title' title='제목' class='chk' /></td> 

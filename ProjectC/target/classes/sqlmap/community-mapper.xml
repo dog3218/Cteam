@@ -18,7 +18,7 @@
 </update>
 
 <!-- 댓글 목록 조회 -->
-<select id="comment_list_mj" resultType="community.CommentVO">
+<select id="comment_list_mj" resultType="app_community.CommentVO">
 	select c.*, (select name from member where member.email = c.writer ) name
 	from comments c
 	where pno = #{pno}
@@ -53,7 +53,7 @@
 </update>
 
 <!-- 해당 글의 상세 정보 조회 -->
-<select id="detail_mj" resultType="community.CommunityVO">
+<select id="detail_mj" resultType="app_community.CommunityVO">
 	select b.*, (select name from member where member.email = b.writer) name
 	from community b
 	where id = #{id}
@@ -94,7 +94,7 @@
 
 <!-- 전체 게시글 조회 -->
 
-<select id="list_mj" resultType="community.CommunityVO">
+<select id="list_mj" resultType="app_community.CommunityVO">
 	select *
 	from (select rownum no, b.*, (select name from member where email = b.writer) name
 			from (select * from community <include refid="where_search" />

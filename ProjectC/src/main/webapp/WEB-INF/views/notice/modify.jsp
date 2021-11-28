@@ -16,7 +16,7 @@
 			<td>
 				<input type="text" name="title" class="chk" title='제목' value="${vo.title }" /> 
 			</td>
-		</tr>
+		</tr> 
 		<tr>
 			<th>내용</th>
 			<td>

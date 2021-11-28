@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style type="text/css">
+<style type="text/css"> 
 #login { width: 70%; height: calc(100% - 50%); padding: 50px 0;	float: left; }
 
 #useremail, #userpw {	width: 48%;	padding: 5px 10%;	margin-bottom: 10px }

@@ -13,4 +13,4 @@
 		<div class='original'>${ fn:replace( fn:replace( vo.content, crlf, '<br>'), lf, '<br>' ) }</div>
 	</div>
 	<hr>
-</c:forEach> 
+</c:forEach>

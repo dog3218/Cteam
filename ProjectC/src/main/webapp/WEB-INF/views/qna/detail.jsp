@@ -8,7 +8,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h3>QnA</h3>
+<h3>QnA</h3> 
 	<table>
 		<tr>
 			<th class='w-px120'>제목</th>
