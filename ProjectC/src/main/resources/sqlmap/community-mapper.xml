@@ -3,7 +3,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="community.mapper">
+<mapper namespace="app_community.mapper">
 
 <!-- 댓글 삭제 처리 -->
 <delete id="comment_delete_mj">
@@ -67,6 +67,14 @@
 			, #{filename2 , jdbcType=VARCHAR }, #{filepath2, jdbcType=VARCHAR}
 			, #{filename3 , jdbcType=VARCHAR }, #{filepath3, jdbcType=VARCHAR} )
 </insert>
+<!-- , filename1, filepath1, filename2, filepath2, filename3, filepath3  -->
+<insert id="insert_show_gm">
+	insert into community (title, content, writer, subject)
+	values ( #{title}, #{content}, #{writer}, #{subject})
+</insert>
+			<!-- , #{filename1 , jdbcType=VARCHAR }, #{filepath1, jdbcType=VARCHAR}
+			, #{filename2 , jdbcType=VARCHAR }, #{filepath2, jdbcType=VARCHAR}
+			, #{filename3 , jdbcType=VARCHAR }, #{filepath3, jdbcType=VARCHAR}  -->
 
 <sql id = 'where_search'>
 	<if test="search=='title' or search=='content' ">
@@ -101,6 +109,27 @@
 					order by id ) b
 			order by no desc)
 	where no between #{beginList} and #{endList}
+</select>
+
+<select id="select_all_jy" resultType="app_community.CommunityVO">
+   select *
+   from community
+</select>
+<select id="select_with_jy" resultType="app_community.CommunityVO">
+   select *
+   from community
+   where subject like '%with%'
+</select>
+<select id="select_qna_jy" resultType="app_community.CommunityVO">
+   select *
+   from community
+   where subject like '%qna%'
+</select>
+
+<select id="select_show_jy" resultType="app_community.CommunityVO">
+   select *
+   from community
+   where subject like '%show%'
 </select>
 
 </mapper>
