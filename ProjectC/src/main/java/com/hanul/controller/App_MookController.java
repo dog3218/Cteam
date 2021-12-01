@@ -191,20 +191,21 @@ public class App_MookController {
 	@RequestMapping("/CommuInsert")
 	public void commuInsert (HttpServletRequest req ,HttpSession session, Model model, HttpServletResponse response) {
 		
-		String email = req.getParameter("email");
 		String title = req.getParameter("title");
 		String content = req.getParameter("content");
+		String email = req.getParameter("email");
 		String subject = req.getParameter("subject");
 		
-		System.out.println(email);
+		System.out.println(email + "put in");
+//		System.out.println(subject + "put in");
 		CommunityVO vo = new CommunityVO();
-		vo.setWriter(email);
 		vo.setTitle(title);
 		vo.setContent(content);
+		vo.setWriter(email);
 		vo.setSubject(subject);
 		
 		
-		int success = sql.insert("app_community.mapper.insert_show_gm", vo);
+		int success = sql.insert("community.mapper.insert_show_gm", vo);
 		
 		Gson gson = new Gson();
 		String json = gson.toJson(success);
@@ -218,10 +219,33 @@ public class App_MookController {
 			e.printStackTrace();
 		} 
 		
-		System.out.println(email);
-		System.out.println(title+"이 담겨서 옴");
-		
+//		System.out.println(email + "upload");
+//		System.out.println(title + "upload");
+//		System.out.println(subject + "upload");
+
 		
 		
 	}
+	
+	@RequestMapping("/comm_List")
+    public void communityList	(HttpServletRequest req, HttpSession session, Model model, HttpServletResponse response, String subject) {
+		
+		//subject = req.getParameter("subject");
+		
+		List<CommunityVO> list = sql.selectList("community.mapper.community_select_gm", subject);
+		
+		
+		
+		Gson gson = new Gson();
+  	  	String json = gson.toJson(list);
+  	  	PrintWriter out;
+  	  
+  	  	try {
+  	  		out = response.getWriter();
+  	  		out.println(json);
+  		  
+  	  	} catch (IOException e) {
+  	  		e.printStackTrace();
+  	  	}
+    }//community_select_gm
 }
