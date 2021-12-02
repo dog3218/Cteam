@@ -32,20 +32,23 @@ public class MemberDAO_GW{
 			
 			ArrayList<MemberVO> dtos = new ArrayList<MemberVO>();
 			for(int i = 0; i < list.size(); i++){
-			dtos.add(new MemberVO(list.get(i).getNickname()
-					,list.get(i).getPassword()
-					,list.get(i).getAddress()
-					,list.get(i).getEmail()
-					,list.get(i).getIdnumber()
-					,list.get(i).getFilepath()
-					,list.get(i).getName()
-					,list.get(i).getType()
-					,list.get(i).getJoindate()
-					,list.get(i).getNaver()
-					,list.get(i).getKakao()
-					,list.get(i).getGoogle()
+				
+			MemberVO memberVO = new MemberVO();
+			memberVO.setNickname(list.get(i).getNickname());
+			memberVO.setPassword(list.get(i).getPassword());
+			memberVO.setAddress(list.get(i).getAddress());
+			memberVO.setEmail(list.get(i).getEmail());
+			memberVO.setIdnumber(list.get(i).getIdnumber());
+			memberVO.setFilepath(list.get(i).getFilepath());
+			memberVO.setName(list.get(i).getName());
+			memberVO.setType(list.get(i).getType());
+			memberVO.setJoindate(list.get(i).getJoindate());
+			memberVO.setNaver(list.get(i).getNaver());
+			memberVO.setKakao(list.get(i).getKakao());
+			memberVO.setGoogle(list.get(i).getGoogle());
+			
+			dtos.add(memberVO);
 					
-					));
 			}
 			return dtos;
 		}
@@ -65,20 +68,6 @@ public class MemberDAO_GW{
 			System.out.println(vo.getEmail());
 			return sql.insert("member.mapper.member_join_app_gw", vo);
 		}
-
-		
-		public void member_delete(int id) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		
-		public void member_update(MemberVO vo) {
-			// TODO Auto-generated method stub
-			
-		}
-
-	
 		public int member_id_chk(String email) {
 			// TODO Auto-generated method stub
 			return sql.selectOne("member_gw.mapper.id_check_app_gw", email);
@@ -89,26 +78,22 @@ public class MemberDAO_GW{
 		public List<BoardVO> nearEventList(Double lang, Double lati) {
 			
 			List<BoardVO> list = sql.selectList("board.mapper.all_gm");
-			
+			nearEventdtos.clear();
 			for(int i = 0; i<list.size(); i++) {
 				if(list.get(i).getLatitude()!=null||list.get(i).getLongitude()!=null) {
 					
 					Double distance = getDistance(lang, lati, 
-							Double.parseDouble(list.get(i).getLatitude()), Double.parseDouble(list.get(i).getLongitude()));
+					Double.parseDouble(list.get(i).getLatitude()), Double.parseDouble(list.get(i).getLongitude()));
 					
-					if(distance<0.5) {
+					if(distance<0.125) {
 						System.out.println(i+"까지의 거리 " + distance);
 						nearEventdtos.add(list.get(i));
-					}
-					
-						
-					}
+					}	
 				}
+			}
 			for(int i = 0; i<nearEventdtos.size(); i++) {
 				System.out.println(nearEventdtos.get(i).getRdnmadr()+", "+nearEventdtos.get(i).getLnmadr());
 			}
-				
-			
 			return nearEventdtos;
 		}
 

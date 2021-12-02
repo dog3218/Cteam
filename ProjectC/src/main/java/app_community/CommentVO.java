@@ -1,11 +1,17 @@
 package app_community;
 
-import java.sql.Date;
 
 public class CommentVO {
 	private int id, pno;
-	private String content, writer;
-	private Date writedate;
+	private String name;
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	private String content, writer, writedate;
+	
 	
 	
 	public int getId() {
@@ -32,10 +38,10 @@ public class CommentVO {
 	public void setWriter(String writer) {
 		this.writer = writer;
 	}
-	public Date getWritedate() {
+	public String getWritedate() {
 		return writedate;
 	}
-	public void setWritedate(Date writedate) {
+	public void setWritedate(String writedate) {
 		this.writedate = writedate;
 	}
 	

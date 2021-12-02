@@ -44,14 +44,14 @@ a.hover {color: black; font-weight: bolder;}
 <!-- 	<form method="post" action="list.co"></form> -->
 	<ul>
 		<li>
-			<div id="modify"><a class='w-pct50' href="detail.my">정보수정</a></div>
+			<div id="modify"><a class='w-pct50' href="detail.my?email=${loginInfo.email}">정보수정</a></div>
 			<div id="like"><a class='w-pct50' >좋아요</a></div>
-			<div id="auth"><a class='w-pct50' href="mj_new.auth">기획자 인증하기</a></div>
+			<div id="auth"><a class='w-pct50' href="new.auth">기획자 인증관리</a></div>
 			<div id="post">
 			<select name="subject" onchange="location.href=this.value">
-			<option value='' selected>내가 쓴 글</option>
+			<option value='' selected>--선택하세요-- </option>
 			<c:if test="${loginInfo.type eq 'producer'}">
-			<option value='post_info.my' ></option>
+			<option value='post_info.my' >공연정보</option>
 			</c:if>
 			<option value='post_comm.my'>커뮤니티</option>
 			<option value='post_qna.my'>QnA</option>

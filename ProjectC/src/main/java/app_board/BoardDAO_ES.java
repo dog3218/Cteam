@@ -12,10 +12,14 @@ import org.springframework.stereotype.Repository;
 public class BoardDAO_ES {
 	@Autowired @Qualifier("cteam")SqlSession sql;
 
+	public void board_readcnt(int no) {
+	      sql.update("board.mapper.readcnt_es", no);
+	   }
 	
 	public List<BoardVO> es_board_list() {
 		List<BoardVO> list =  sql.selectList("es.board.mapper.es_board_list");
 		
+
 		ArrayList<BoardVO> dtos = new ArrayList<BoardVO>();
 		for (int i = 0; i < dtos.size(); i++) {
 			BoardVO vo = new BoardVO();

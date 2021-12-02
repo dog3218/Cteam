@@ -25,7 +25,7 @@ function go_modify(){
 		data : {pw:$('#userpw').val() },
 		success : function(response) {
 			if ( response ) {
-				location = 'modify.my';
+				location = "modify.my?email=${loginInfo.email}";
 			} else {
 				alert("비밀번호가 일치하지 않습니다.")
 			}

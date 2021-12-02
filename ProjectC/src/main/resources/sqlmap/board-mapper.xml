@@ -4,6 +4,11 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="board.mapper">
+
+<update id="readcnt_es">
+         update board set readcnt = readcnt + 1
+      where no = #{no}
+   </update>
 	<delete id="board_clear_gw">
 		delete from board
 	</delete>
@@ -15,7 +20,24 @@
 	</insert>
 	
 	<select id="board_list_gw" resultType="app_board.BoardVO">
-		select * from board
+		select *
+		from (select rownum num, b.*, (select name from member where email = b.writer) name
+			from (select * from board <include refid="where_search" />
+					order by no) b
+			order by num desc)
+		where num between #{beginList} and #{endList}
+	</select>
+	
+	<update id="board_read_gw">
+	update board set readcnt = readcnt + 1
+	where no = ${no}
+	</update>
+	
+	<select id="board_detail" resultType="app_board.BoardVO">
+		select * from board where no = ${id}
+	</select>
+	<select id="list_cnt_web_gw" resultType="Integer">
+		select count(*) from board <include refid="where_search" />
 	</select>
 	
 	<select id="all_gm" resultType="app_board.BoardVO">
@@ -72,22 +94,42 @@
 		or eventco like  '%재즈%'
 		order by eventnm
 	</select>
-	
+<!--추천 탭에 목록 가져오는 애들  -->
+	<!-- 조회순  -->
 	<select id="read_es" resultType="app_board.BoardVO">
       select *
       from board 
       order by readcnt
    </select>
-   
+	<!--댓글순  -->   
    <select id="review_es" resultType="app_board.BoardVO">
       select b.*, (select content from comments where comments.writer = b.writer) content
       from board b
       order by content
    </select>
-   
+	<!--좋아요 순  -->   
    <select id="favorite_es" resultType="app_board.BoardVO">
       select b.*, (select like_type from favorite) like_type
       from board b
       order by like_type
    </select>
+   
+<!--검색을 위한 단축어  -->
+   <sql id = 'where_search'>
+	<if test="search=='eventnm' or search=='eventco' ">
+		where ${search} like '%'|| #{keyword} || '%' 
+	</if>
+	<if test="search == 'writer' ">
+		where <include refid="search_writer" />		
+	</if>
+	<if test="search == 'all' ">
+		where eventnm like '%'|| #{keyword} ||'%'
+		or eventco like '%'|| #{keyword} ||'%'
+		or <include refid="search_writer" /> 
+		<!--  writer in ( select id from s_member where name like '%'|| #{keyword} ||'%' ) -->
+	</if>
+</sql>
+<sql id='search_writer'>
+	writer in ( select email from member where name like '%'|| #{keyword} ||'%' )
+</sql>
 </mapper>

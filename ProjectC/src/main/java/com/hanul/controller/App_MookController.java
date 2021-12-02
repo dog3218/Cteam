@@ -4,13 +4,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,12 +16,10 @@ import com.google.gson.Gson;
 
 import app_board.BoardDAO_GM;
 import app_board.BoardVO;
-import app_community.CommunityVO;
 
 @Controller
 public class App_MookController {
 	@Autowired private BoardDAO_GM dao_gm;
-	@Autowired @Qualifier("cteam") SqlSession sql;
 	
 	@RequestMapping("/all")
 	public void listAll(HttpSession session, Model model, HttpServletResponse response) {
@@ -186,66 +181,4 @@ public class App_MookController {
 		} 
 		
 	}
-	
-	
-	@RequestMapping("/CommuInsert")
-	public void commuInsert (HttpServletRequest req ,HttpSession session, Model model, HttpServletResponse response) {
-		
-		String title = req.getParameter("title");
-		String content = req.getParameter("content");
-		String email = req.getParameter("email");
-		String subject = req.getParameter("subject");
-		
-		System.out.println(email + "put in");
-//		System.out.println(subject + "put in");
-		CommunityVO vo = new CommunityVO();
-		vo.setTitle(title);
-		vo.setContent(content);
-		vo.setWriter(email);
-		vo.setSubject(subject);
-		
-		
-		int success = sql.insert("community.mapper.insert_show_gm", vo);
-		
-		Gson gson = new Gson();
-		String json = gson.toJson(success);
-		PrintWriter out;
-		// 클라이언트에게 응답
-		try {
-			out = response.getWriter();
-			out.println(json);	
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-		
-//		System.out.println(email + "upload");
-//		System.out.println(title + "upload");
-//		System.out.println(subject + "upload");
-
-		
-		
-	}
-	
-	@RequestMapping("/comm_List")
-    public void communityList	(HttpServletRequest req, HttpSession session, Model model, HttpServletResponse response, String subject) {
-		
-		//subject = req.getParameter("subject");
-		
-		List<CommunityVO> list = sql.selectList("community.mapper.community_select_gm", subject);
-		
-		
-		
-		Gson gson = new Gson();
-  	  	String json = gson.toJson(list);
-  	  	PrintWriter out;
-  	  
-  	  	try {
-  	  		out = response.getWriter();
-  	  		out.println(json);
-  		  
-  	  	} catch (IOException e) {
-  	  		e.printStackTrace();
-  	  	}
-    }//community_select_gm
 }

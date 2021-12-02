@@ -5,8 +5,6 @@
 
 <mapper namespace="auth.mapper">
 
-
-
 <!-- 해당 글 수정 저장 처리 -->
 <update id="update">
 	update producer_check set title=#{title}, content = #{content}
@@ -70,6 +68,11 @@
 					order by id ) b
 			order by no desc)
 	where no between #{beginList} and #{endList}
+</select>
+
+<select id="auth_list_es" resultType="web_auth.AuthVO">
+   select *
+   from producer_check
 </select>
 
 </mapper>

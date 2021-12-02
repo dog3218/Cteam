@@ -17,15 +17,23 @@ table tr td {text-align: left;}
 <!-- 저장 후 member_detail로 넘어가기 -->
 <body>
 <h3>회원 정보 변경</h3>
-	<form name="input" action="detail"  method="post">
+	<form name="input" action="update.my"  method="post" enctype="multipart/form-data">
+	<input type="hidden" name='email' value="${vo.email}" />
 		<table class='w-pct40'>
 			<tr>
 				<th class='w-px120'>성명</th>
-				<td >${loginInfo.name }</td>
+				<td >${vo.name }</td>
 			</tr>
 			<tr>
 				<th>이메일</th>
-				<td>${loginInfo.email}</td>
+				<td>${vo.email}</td>
+			</tr>
+			<tr>
+				<th>비밀번호</th>
+				<td>
+					<input type="password" name='password' class='chk' /><br/>
+					<div class='valid'>비밀번호를 입력하세요(영문 대/소문자, 숫자를 모두 포함)</div>
+				</td>
 			</tr>
 			<tr>
 				<th>닉네임</th>
@@ -34,27 +42,27 @@ table tr td {text-align: left;}
 			
 			<tr>
 				<th>회원유형</th>
-				<td>${loginInfo.type }</td>
+				<td>${vo.type}</td>
 			</tr>
 			
 			<tr>
 				<th>가입날짜</th>
-				<td>${loginInfo.joindate }</td>
+				<td>${vo.joindate}</td>
 			</tr>
 			<tr>
-				<th>*주소</th>
+				<th>주소</th>
 				<td class='addr'><a class='btn-fill-s' onclick='daum_post()'>우편번호 찾기</a>
 					<input type="text" name='post' class = 'w-px60' /> <br/>				
-					<input type="text" name='addr' /> <br/>				
-					<input type="text" name='addr' />				
+					<input type="text" name='address' /> <br/>				
+					<input type="text" name='address' />				
 				</td>
 			</tr>
 		</table>
 	</form>
 	
 	<div class='btnSet'>
-		<a class='btn-fill' onclick = ' if ( emptyCheck() ) $("form").submit() '>수정 완료</a>
-		<a class='btn-empty' href='<c:url value="detail.my" />'>취소</a>		
+		<a class='btn-fill' onclick = '$("form").submit() '>수정 완료</a>
+		<a class='btn-empty' href='detail.my'>취소</a>	
 	</div>
 	
 	<!-- 다음 주소 검색 API -->
@@ -64,7 +72,7 @@ table tr td {text-align: left;}
 	
 	<script type="text/javascript" src="js/join-check.js"></script> 
 	<script type="text/javascript">
-	
+/* 	
 	function go_modify(){
 		if(confirm("회원 정보를 수정을 완료하시겠습니까?")){
 			location.href="member_detail";
@@ -72,7 +80,10 @@ table tr td {text-align: left;}
 		}else{
 			return false;
 		}
-	}
+	} */
+	
+	
+	
 	
 	function daum_post() {
 	    new daum.Postcode({
@@ -82,11 +93,11 @@ table tr td {text-align: left;}
 	            $('[name=post]').val( data.zonecode);
 	            
 	            // 지번 주소 : J  도로명 주소 : R
-	            var addr =data.userSelectedType == 'J' ? data.jibunAddress : data.roadAddress;
+	            var address =data.userSelectedType == 'J' ? data.jibunAddress : data.roadAddress;
 	            
 	            // 건물명이 있을 경우 추가
-	            if ( data.buildingName != '') addr += ' ('+ data.buildingName + ')'; 
-	            	$('[name=addr]').eq(0).val( addr );
+	            if ( data.buildingName != '') address += ' ('+ data.buildingName + ')'; 
+	            	$('[name=address]').eq(0).val( address );
 	        }
 	    }).open();
 	}

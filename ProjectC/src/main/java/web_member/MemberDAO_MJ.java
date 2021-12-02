@@ -1,6 +1,7 @@
 package web_member;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +26,13 @@ public class MemberDAO_MJ {
 	}
 
 	
-	public boolean member_delete(String id) {
-		// TODO Auto-generated method stub
-		return false;
+	public int member_delete(String email) {
+		return sql.delete("member.mapper.delete", email);
 	}
 
 	
-	public boolean member_id_check(String id) {
-		return (Integer) sql.selectOne("member.mapper.id_check_mj", id) == 0 ? true : false;
+	public boolean member_id_check(String email) {
+		return (Integer) sql.selectOne("member.mapper.id_check_mj",email) == 0 ? true : false;
 	}
 
 	
@@ -59,6 +59,15 @@ public class MemberDAO_MJ {
 	
 	public MemberVO member_detail(String email) {
 		return sql.selectOne("member.mapper.detail_mj", email);
+	}
+	
+	public MemberPage member_list(MemberPage page){
+		//전체 회원목록 조회
+		page.setTotalList(sql.selectOne("member.mapper.totalList", page));
+		
+		//페이징 처리된 전체 회원목록 조회
+		page.setList(sql.selectList("member.mapper.list", page));
+		return page;
 	}
 	
 

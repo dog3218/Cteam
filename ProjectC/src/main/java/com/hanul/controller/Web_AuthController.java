@@ -69,7 +69,7 @@ public class Web_AuthController {
 		
 		model.addAttribute("uri", "detail.auth");
 		model.addAttribute("id", vo.getNo());
-		return "auth/redirect";
+		return "redirect";
 		
 
 	}
@@ -79,7 +79,7 @@ public class Web_AuthController {
 	public String modify(int no, Model model) {
 		// 해당 글의 정보를 DB에서 조회해와 수정 화면에 출력
 		model.addAttribute("vo", service.auth_detail(no));
-		return "auth/modify";
+		return "auth/auth_modify";
 	}
 
 	/*
@@ -108,44 +108,58 @@ public class Web_AuthController {
 	@RequestMapping("/detail.auth")
 	public String detail(int no, Model model) {
 
-		// 해당 커뮤니티 인증글을 DB에서 조회해와 상세화면에 출력
+		// 기획자 인증글을 DB에서 조회해와 상세화면에 출력
 		model.addAttribute("vo", service.auth_detail(no));
 		model.addAttribute("crlf", "\r\n");
 		model.addAttribute("page", page);
-		return "auth/detail";
+		return "auth/auth_detail";
+	}
+	
+	// 기획자 인증 상세화면 요청 ==> 관리자만 볼 수 있는 페이지
+	@RequestMapping("/detail_admin.auth")
+	public String detail_admin(int no, Model model) {
+		
+		// 기획자 인증글을 DB에서 조회해와 상세화면에 출력
+		model.addAttribute("vo", service.auth_detail(no));
+		model.addAttribute("crlf", "\r\n");
+		model.addAttribute("page", page);
+		return "auth/auth_detail_admin";
 	}
 
 	// 기획자 인증 글 신규 저장 처리 요청
 	@RequestMapping("/insert.auth")
-	public String insert(AuthVO vo, MultipartFile file, HttpSession session ) {
+	public String insert(AuthVO vo, MultipartFile file, HttpSession session,Model model ) {
 		
 		// 첨부된 파일이 있다면
 		if ( ! file.isEmpty()) {
 			vo.setFilename1(file.getOriginalFilename());
-			vo.setFilepath1( common.fileUpload("community", file, session) );
+			vo.setFilepath1( common.fileUpload("auth", file, session) );
 		}
 		
 		MemberVO member =  (MemberVO) session.getAttribute("loginInfo");
 		vo.setWriter( member.getEmail() );
 		
-		// 화면에서 입력한 정보를 DB에 신규 저장한 후 목록화면 연결
+		// 화면에서 입력한 기획자 인증 정보를 DB에 신규 저장한 후 목록화면 연결
 		service.auth_insert(vo);
-		return "redirect:detail.auth";
+		model.addAttribute("uri", "detail.auth" );
+		model.addAttribute("no",vo.getNo() );
+		
+		return "redirect";
 	}
 	
 	// 기획자 인증 글쓰기 화면 요청(글을 하나도 쓰지 않은 경우)
 	@RequestMapping("/new.auth")
 	public String auth_new() {
-		return "auth/new";
+		return "auth/auth_new";
 	}
 
 	// 기획자 인증 목록화면 요청 ==> 관리자만 볼 수 있음
-	@RequestMapping("/list.auth")
+	@RequestMapping("/auth_list.admin")
 	public String list(HttpSession session, String search, String keyword,
 			@RequestParam(defaultValue = "10") int pageList, @RequestParam(defaultValue = "1") int curPage,
 			@RequestParam(defaultValue = "list") String viewType, Model model) {
 
-		session.setAttribute("category", "auth");
+		session.setAttribute("category", "admin");
 
 		// DB에서 커뮤니티 정보를 조회해와 목록화면에 출력
 		page.setCurPage(curPage); // 현재 페이지를 담음
@@ -156,7 +170,7 @@ public class Web_AuthController {
 		page.setViewType(viewType); // 게시판 형태
 		model.addAttribute("page", service.auth_list(page));
 
-		return "auth/list";
+		return "member/list_admin";
 
 	}
 	

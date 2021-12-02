@@ -47,8 +47,8 @@ img.social { width: 200px; 	height: 45px; }
 				<div style='width: 80%; margin: 25px auto; border: 1px solid #ccc'></div>
 				<!-- hr 효과 -->
 
-				<input type="text" placeholder="이메일" id='useremail' autofocus /> 
-				<input type="password" placeholder="비밀번호" id='userpw'
+				<input type="text" placeholder="이메일" id='useremail' autofocus value="1@naver.com"/> 
+				<input type="password" placeholder="비밀번호" id='userpw' value="1"
 						onkeypress = "if (event.keyCode == 13) go_login()" /><br>
 			<!-- onkeypress : keyCode 13번(Enter Key)을 눌렀을 때 go_login() 처리 -->	
 					<a class='btn-fill' onclick="go_login()">로그인</a>

@@ -12,7 +12,7 @@
 </c:choose>
 
 <!DOCTYPE html>
-<html> 
+<html>
 <head>
 <meta charset="UTF-8">
 <title>${title } </title>
@@ -44,7 +44,7 @@
                     <tiles:insertAttribute name="content"/>
                 </div>
             </div><!-- end Page content wrapper-->
-        </div>
+
         <!-- end #wrapper -->
 
         <!-- Bootstrap core JS-->

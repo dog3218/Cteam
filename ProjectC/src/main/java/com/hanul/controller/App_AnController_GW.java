@@ -200,12 +200,8 @@ public class App_AnController_GW {
 	@RequestMapping("/nearLocationSelect_app")
 	public void nearLoacationSelect(String currentLangitude, String currentLatitude, HttpServletRequest req, HttpServletResponse res) {
 		System.out.println("주변 행사 검색");
-			Double lang = Double.parseDouble(currentLatitude);/*	currentLangitude 35.153356;*/ 
-		
-		
-			
-			
-			Double lati =Double.parseDouble(currentLangitude); /*  126.887881;  */
+		Double lang = Double.parseDouble(currentLatitude);/*   35.153356;*/ 
+		Double lati =Double.parseDouble(currentLangitude); /*  126.887881;  */
 			
 		System.out.println("lagn : "+ lang +" , lati : "+lati);
 		nearEventdtos = member_gw.nearEventList(lang, lati);

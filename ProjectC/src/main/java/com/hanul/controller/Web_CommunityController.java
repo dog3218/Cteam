@@ -51,7 +51,20 @@ public class Web_CommunityController {
 		return commu_gm.comment_insert(vo) == 1 ? true : false;
 		// 반환결과가 1 이면 true 아니면 false
 	}
+	//
+	@ResponseBody
+	@RequestMapping("/community/comment/delete")
+	public boolean comment_delete(int id, HttpSession session) {
+		System.out.println("id: "+id+"댓글 삭제 요청");
+		
+		return commu_gm.comment_delete(id) == 1 ? true : false;
+	}
 	
+	@RequestMapping("/community/comment/update")
+	public CommunityVO comment_update(int id, HttpSession session) {
+		 CommunityVO vo = commu_gm.community_detail(id);
+		return vo;
+	}
 	
 	// 커뮤니티 글 수정 저장처리 요청
 	@RequestMapping ("/update.co")
@@ -95,7 +108,7 @@ public class Web_CommunityController {
 		
 		model.addAttribute("uri", "detail.co");
 		model.addAttribute("id", vo.getId());
-		return "community/redirect";
+		return "redirect";
 	}
 	
 	// 커뮤니티 글 수정 화면 요청
@@ -103,7 +116,7 @@ public class Web_CommunityController {
 	public String modify(int id, Model model) {
 		// 해당 글의 정보를 DB에서 조회해와 수정화면에 출력
 		model.addAttribute("vo", commu_gm.community_detail(id)) ;
-		return "community/modify";
+		return "community/commu_modify";
 	}
 	
 	// 커뮤니티 글 삭제 처리 요청
@@ -123,7 +136,7 @@ public class Web_CommunityController {
 		
 		model.addAttribute("uri", "list.co");
 		model.addAttribute("page", page);
-		return "community/redirect";
+		return "redirect";
 		
 	}
 	
@@ -148,7 +161,7 @@ public class Web_CommunityController {
 		model.addAttribute("vo", commu_gm.community_detail(id) );
 		model.addAttribute("crlf", "\r\n");
 		model.addAttribute("page", page);
-		return "community/detail";
+		return "community/commu_detail";
 	}
 	
 	
@@ -173,7 +186,7 @@ public class Web_CommunityController {
 	// 커뮤니티 글쓰기 화면 요청
 	@RequestMapping ("/new.co")
 	public String community() {
-		return "community/new";
+		return "community/commu_new";
 	}
 	
 	// 커뮤니티 목록화면 요청
@@ -195,6 +208,6 @@ public class Web_CommunityController {
 		page.setPageList(pageList);	// 페이지당 보여질 글 목록 수
 		page.setViewType(viewType);	// 게시판 형태
 		model.addAttribute("page", commu_gm.community_list(page) );
-		return "community/list";
+		return "community/commu_list";
 	}
 }

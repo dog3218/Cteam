@@ -32,10 +32,6 @@
 		<put-attribute name="content" value="/WEB-INF/views/member/join.jsp" />
 	</definition>
 	
-	<definition name="/" template="/WEB-INF/views/tiles/layout.jsp">
-		<put-attribute name="content" value="/WEB-INF/views/home.jsp" />
-	</definition>
-	
 	
 	
 </tiles-definitions>

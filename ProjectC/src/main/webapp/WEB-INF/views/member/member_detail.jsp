@@ -7,8 +7,6 @@
 <title>Insert title here</title>
 <style>
 a{text-decoration: none;}
-
- 
 </style>
 </head>
 <body>
@@ -17,29 +15,29 @@ a{text-decoration: none;}
 		<table class='w-pct40'>
 			<tr>
 				<th class='w-px120'>성명</th>
-				<td >${loginInfo.name }</td>
+				<td >${vo.name }</td>
 			</tr>
 			<tr>
 				<th>이메일</th>
-				<td>${loginInfo.email}</td>
+				<td>${vo.email}</td>
 			</tr>
 			<tr>
 				<th>닉네임</th>
-				<td>${loginInfo.nickname }</td>
+				<td>${vo.nickname }</td>
 			</tr>
 			
 			<tr>
 				<th>회원유형</th>
-				<td>${loginInfo.type }</td>
+				<td>${vo.type }</td>
 			</tr>
 			
 			<tr>
 				<th>가입날짜</th>
-				<td>${loginInfo.joindate }</td>
+				<td>${vo.joindate }</td>
 			</tr>
 			<tr>
 				<th>주소</th>
-				<td>${loginInfo.address}</td>
+				<td>${vo.address}</td>
 			</tr>
 		</table>
 	

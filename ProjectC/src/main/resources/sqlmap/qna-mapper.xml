@@ -6,26 +6,13 @@
 <mapper namespace="qna.mapper">
 
 	<!-- QnA에 대한 신규 답글 등록(저장) -->
-	<!-- <insert id="reply_insert"> -->
-	
-	<!-- 오라클의 경우 여러 쿼리문으로 작성할 경우 명령행을 구분하기 위해 ; 을 붙여 사용 -->
-	<!-- <![CDATA[
-		{
-			call declare
-			begin
+	<update id="reply_insert"> 
+		update qna
+		set reply_content=#{reply_content}, replydate=to_char(sysdate), replyid=#{replyid}, root=#{root}
+		where id=#{id}
 		
-				update qna set step = step + 1 where root = #{root} and step > #{step};
-			
-				insert into qna (id, title, content, writer, filename, filepath, root, step, indent)
-				values (seq_qna.nextval, #{title}, #{content}, #{writer},
-						#{filename, jdbcType=VARCHAR}, #{filepath, jdbcType=VARCHAR},
-						#{root}, #{step}+1, #{indent}+1);
-			end
-		}
-	]]>
-	</insert>
- -->
-
+	</update>
+ 
 	<!-- QnA 게시글 내용 수정 -->
 	<update id="update">
 		update qna set title=#{title}, content=#{content}
@@ -46,8 +33,8 @@
 
 	<!-- QnA글 상세 내용 조회 -->
 	<select id="detail" resultType="web_qna.QnaVO">
-		select qna.*, ( select name from member where member.id = qna.writer ) name 
-		from qna
+		select q.*, ( select name from member where member.email = q.writer ) name 
+		from qna q
 		where id = #{id}
 	
 	</select>

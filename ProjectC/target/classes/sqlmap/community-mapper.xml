@@ -27,7 +27,7 @@
 
 <!-- 댓글 저장 처리 _ 내용, 작성자, 원글 정보를 저장 -->
 <insert id="comment_insert_mj">
-	insert into comments(id, content, writer, pno)
+	insert into comments(content, writer, pno)
 	values (#{content, jdbcType=VARCHAR}, #{writer, jdbcType=VARCHAR}, #{pno})
 </insert>
 
@@ -102,5 +102,17 @@
 			order by no desc)
 	where no between #{beginList} and #{endList}
 </select>
-
+<!-- 게시글 등록 -->
+<insert id="insert_show_gm">
+   insert into community (title, content, writer, subject<!-- , filename1, filepath1, filename2, filepath2, filename3, filepath3  -->)
+   values ( #{title}, #{content}, #{writer}, #{subject}
+         <!-- , #{filename1 , jdbcType=VARCHAR }, #{filepath1, jdbcType=VARCHAR}
+         , #{filename2 , jdbcType=VARCHAR }, #{filepath2, jdbcType=VARCHAR}
+         , #{filename3 , jdbcType=VARCHAR }, #{filepath3, jdbcType=VARCHAR}  -->)
+</insert>
+<select id="community_select_gm" resultType="app_community.CommunityVO">
+   select *
+   from community
+   where subject = #{subject}
+</select>
 </mapper>

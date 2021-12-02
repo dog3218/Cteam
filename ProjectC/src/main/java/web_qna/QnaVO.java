@@ -2,7 +2,7 @@ package web_qna;
 
 public class QnaVO {
 	
-	private int id, readcnt, no;
+	private int id, readcnt, root, no;
 	private String title, content, reply_content, writer, secret, reply_done, writedate, replydate, replyid, name;
 	
 	public int getId() {
@@ -17,11 +17,11 @@ public class QnaVO {
 	public void setReadcnt(int readcnt) {
 		this.readcnt = readcnt;
 	}
-	public int getNo() {
-		return no;
+	public int getRoot() {
+		return root;
 	}
-	public void setNo(int no) {
-		this.no = no;
+	public void setRoot(int root) {
+		this.root = root;
 	}
 	public String getTitle() {
 		return title;
@@ -82,6 +82,12 @@ public class QnaVO {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public int getNo() {
+		return no;
+	}
+	public void setNo(int no) {
+		this.no = no;
 	}
 	
 	

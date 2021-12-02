@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import app_member.MemberVO;
 import web_common.CommonService;
 import web_member.MemberDAO_MJ;
+import web_member.MemberPage;
 
 @Controller
 public class Web_MemberController {
@@ -26,24 +27,147 @@ public class Web_MemberController {
    
    private String naver_client_id = "jpLk2cBAgCpN07Z9Qx4B";
    private String kakao_client_id = "70abb9970adb1cad341591555e9378d4";
-      
-   //회원 정보 수정 후 저장
-   @RequestMapping("/update.my")
-   public String member_update(MemberVO vo, Model model, HttpSession session) {
-      //화면에서 수정한 정보들을 DB에서 저장한 후 상세화면 연결
-      service.member_update(vo);
-      model.addAttribute("uri", "update.my");
-      model.addAttribute("email", vo.getEmail());
-      return "member/redirect";
+   @Autowired private MemberPage page;   
+  
+ //관리자가 회원 디테일에서 회원 삭제
+   @RequestMapping("/member_delte.admin")
+   public String delete(String email, Model model) {
+	   //해당 회원의 정보를 DB에서 삭제한 후 회원 목록 화면으로 연결
+	   service.member_delete(email);
+	   model.addAttribute("uri", "member.admin");
+	   model.addAttribute("page", page);
+	   return "redirect";
    }
    
-   //회원 정보 수정 화면 요청
-   @RequestMapping("/list.my" )
-   public String member_modify(String email, Model model) {
+   
+	//관리자가 회원 리스트에서 회원 클릭하면 상세 정보 조회 및 화면 출력
+	@RequestMapping("/member_detail.admin")
+	public String member_detail(String email, Model model) {
+		model.addAttribute("vo", service.member_detail(email));
+		return "member/member_detail_admin";
+	}
+	
+	
+   //관리자 회원정보 리스트 띄워주기
+   @RequestMapping("/member.admin")
+   public String list_member(HttpSession session
+			, String search, String keyword
+			, @RequestParam (defaultValue = "10") int pageList
+			, @RequestParam (defaultValue = "1") int curPage
+			, @RequestParam (defaultValue = "list") String viewType
+			, Model model) {
+		
+		session.setAttribute("category", "admin");
+		
+		// DB에서 회원 정보를 조회해와 목록화면에 출력
+		page.setCurPage(curPage);	// 현재 페이지를 담음
+		
+		page.setSearch(search);		// 검색 조건
+		page.setKeyword(keyword);	// 검색어
+		page.setPageList(pageList);	// 페이지당 보여질 글 목록 수
+		page.setViewType(viewType);	// 게시판 형태
+		model.addAttribute("page", service.member_list(page) );
+	   
+	   return "member/list_member";
+   }
+ 
+      
+   //관리자 마이페이지 띄워주기
+   @RequestMapping("/mypage.admin")
+   public String mypage_admin() {
+	   return "member/mypage_admin";
+   }
+//--------------------------------------------------------------------------------------------------
+   //내가 쓴 글 띄워주기
+	@RequestMapping("/post_qna.my")
+	public String qna() {
+		return "member/post_qna";
+	}
+	
+	@RequestMapping("/post_info.my")
+	public String info() {
+		return "member/post_info";
+	}
+	
+	@RequestMapping("/post_comm.my")
+	public String comm() {
+		return "member/post_comm";
+	}
+	
+   //회원 정보 수정 후 저장 처리 요청
+   @RequestMapping("/update.my")
+   public String update(MemberVO vo, Model model) {
+      service.member_update(vo);      
+      System.out.println("회원정보 수정");
+      model.addAttribute("uri", "detail.my");
+      model.addAttribute("email", vo.getEmail());
+      return"member/redirect";
+   }
+
+   //정보 수정화면 요청
+   @RequestMapping("/modify.my")
+   public String modify(String email, Model model) {
       model.addAttribute("vo", service.member_detail(email));
+      return "member/modify";
+   }
+   
+   //비밀번호 확인 처리 요청
+   @ResponseBody
+   @RequestMapping("/confirm_pw")
+   public boolean confirm(MemberVO vo,  HttpSession session, String pw) {
+      MemberVO member = (MemberVO) session.getAttribute("loginInfo");
+      vo.setEmail(member.getEmail());
+      
+      String pwCh = member.getPassword();      
+      boolean check;
+      
+//      if (pw == pwCh) {
+      if (pw.equals(pwCh)) {
+//         return "modify.my";
+         return true;
+         
+      }else {
+//         return "redirect:comfirm:my";
+         return false;
+      }
+   }
+   
+   
+   //정보수정 클릭 후 비밀번호 확인하기 창
+   @RequestMapping("/confirm.my")
+   public String confirm() {
+      return "member/confirm";
+   }
+   
+   //정보수정 클릭하면 내 정보 띄워주기
+   @RequestMapping("/detail.my")
+   public String detail() {
       return "member/member_detail";
    }
+      
+   /*
+    * //회원 정보 수정 후 저장
+    * 
+    * @RequestMapping("/update.my") public String member_update(MemberVO vo, Model
+    * model, HttpSession session) { //화면에서 수정한 정보들을 DB에서 저장한 후 상세화면 연결
+    * service.member_update(vo); model.addAttribute("uri", "update.my");
+    * model.addAttribute("email", vo.getEmail()); return "member/redirect"; }
+    */
+
    
+   //마이페이지 화면(정보수정, 커뮤니티, 내가 쓴 글 탭) 요청
+   @RequestMapping("/mypage.user" )
+   public String mypage() {
+	   return "member/mypage";
+   }
+
+	/*
+	 * //회원 정보 수정 화면 요청
+	 * 
+	 * @RequestMapping("/list.my" ) public String member_modify(String email, Model
+	 * model) { model.addAttribute("vo", service.member_detail(email)); return
+	 * "member/member_detail"; }
+	 */
    
    // 회원 가입 처리 요청
    @ResponseBody 

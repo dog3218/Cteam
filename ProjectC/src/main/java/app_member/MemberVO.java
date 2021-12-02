@@ -12,26 +12,6 @@ public class MemberVO {
 
 
 
-	public MemberVO(String nickname, String password, 
-			String address, String email, String idnumber, 
-			String filepath,
-			String name, String type, String joindate, String naver, 
-			String kakao, String google) {
-		super();
-		this.nickname = nickname;
-		this.password = password;
-		this.address = address;
-		this.email = email;
-		this.idnumber = idnumber;
-		this.filepath = filepath;
-		this.name = name;
-		this.type = type;
-		this.joindate = joindate;
-		this.naver = naver;
-		this.kakao = kakao;
-		this.google = google;
-	}
-
 
 	public MemberVO(String nickname, String password,
 			String address, String email, String idnumber, String name) {

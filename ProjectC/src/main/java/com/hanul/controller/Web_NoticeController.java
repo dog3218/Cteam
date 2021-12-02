@@ -31,7 +31,7 @@ public class Web_NoticeController {
 		
 		model.addAttribute("uri", "detail.no");
 		model.addAttribute("id", vo.getId());
-		return "notice/redirect";
+		return "redirect";
 	}
 	
 	// 공지사항 글 수정 화면 요청
@@ -39,7 +39,7 @@ public class Web_NoticeController {
 	public String modify(int id, Model model) {
 		// 해당 글의 정보를 DB에서 조회해와 수정화면에 출력
 		model.addAttribute("vo", service.notice_detail(id)) ;
-		return "notice/modify";
+		return "notice/noti_modify";
 	}
 	
 	// 공지사항 글 삭제 처리 요청
@@ -52,7 +52,7 @@ public class Web_NoticeController {
 		
 		model.addAttribute("uri", "list.no");
 		model.addAttribute("page", page);
-		return "notice/redirect";
+		return "redirect";
 		
 	}
 	
@@ -68,7 +68,7 @@ public class Web_NoticeController {
 		model.addAttribute("vo", service.notice_detail(id) );
 		model.addAttribute("crlf", "\r\n");
 		model.addAttribute("page", page);
-		return "notice/detail";
+		return "notice/noti_detail";
 	}
 	
 	
@@ -87,7 +87,7 @@ public class Web_NoticeController {
 	// 공지사항 글쓰기 화면 요청
 	@RequestMapping ("/new.no")
 	public String notice() {
-		return "notice/new";
+		return "notice/noti_new";
 	}
 	
 	// 공지사항 목록화면 요청
@@ -107,6 +107,6 @@ public class Web_NoticeController {
 		page.setPageList(pageList);	// 페이지당 보여질 글 목록 수
 		page.setViewType(viewType);	// 게시판 형태
 		model.addAttribute("page", service.notice_list(page) );
-		return "notice/list";
+		return "notice/noti_list";
 	}
 }
