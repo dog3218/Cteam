@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,10 +18,12 @@ import com.google.gson.Gson;
 
 import app_board.BoardDAO_GM;
 import app_board.BoardVO;
+import app_community.CommunityVO;
 
 @Controller
 public class App_MookController {
 	@Autowired private BoardDAO_GM dao_gm;
+	@Autowired private SqlSession sql;
 	
 	@RequestMapping("/all")
 	public void listAll(HttpSession session, Model model, HttpServletResponse response) {
@@ -181,4 +185,25 @@ public class App_MookController {
 		} 
 		
 	}
+	@RequestMapping("/comm_List")
+    public void communityList   (HttpServletRequest req, HttpSession session, Model model, HttpServletResponse response, String subject) {
+      
+      subject = req.getParameter("subject");
+      
+      List<CommunityVO> list = sql.selectList("app_community.mapper.community_select_gm", subject);
+      
+      
+      
+      Gson gson = new Gson();
+          String json = gson.toJson(list);
+          PrintWriter out;
+       
+          try {
+             out = response.getWriter();
+             out.println(json);
+          
+          } catch (IOException e) {
+             e.printStackTrace();
+          }
+    }//community_select_gm
 }
