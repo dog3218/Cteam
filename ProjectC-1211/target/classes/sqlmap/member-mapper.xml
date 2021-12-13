@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member.mapper">
+
+	<!-- 회원탈퇴 -->
+	<delete id="quit">
+		delete from member
+		where email=#{email} 
+	
+	</delete>
+	
+	<!-- 내가 쓴 글(QnA) 전체 게시글 수 조회 -->
+	<select id="my_qna_total" resultType="integer">
+		select count(*) from qna where writer=#{email}
+	</select>
+
+	<!-- 내가 쓴 글(Qna) 페이징 처리된 전체 게시글 조회 -->
+	<select id="my_qna_list" resultType="web_qna.QnaVO">
+		select *
+	from (select rownum no, b.*, (select name from member where email = b.writer) name
+			from (select * from qna where writer=#{email}
+					order by id ) b
+			order by no desc)
+	where no between #{page.beginList} and #{page.endList}
+	</select>
+	
+	<!-- 내가 쓴 글(QnA) 조회수 증가 -->
+	<update id="my_qna_read">
+		update qna set readcnt = readcnt + 1
+		where id = #{id}	
+	</update>
+	
+	<!-- 내가 쓴 글(QnA) 상세 정보 조회 -->
+	<select id="my_qna_detail" resultType="web_qna.QnaVO">
+		select q.*, ( select name from member where member.email = q.writer ) name 
+		from qna q
+		where id = #{id}	
+	</select>
+	
+	<!-- 내가 쓴 글(QnA) 수정 저장처리 -->
+	<update id="my_qna_update">
+		update qna set title=#{title}, content=#{content}
+		where id = #{id}
+	</update>
+
+	<!-- 내가 쓴 글(QnA) 삭제처리 -->
+	<delete id="my_qna_delete">
+		delete from qna
+		where id = #{id}	
+	</delete>
+	
+<!-- ////////////////////////////////////////////////////////////////////////  -->
+
+	<!-- 내가 쓴 글(공연홍보) 전체 게시글 수 조회 -->
+	<select id="my_bo_total" resultType="integer">
+		select count(*) from board where writer=#{email}
+	</select>
+
+	<!-- 내가 쓴 글(공연홍보) 페이징 처리 된 전체 게시글 조회 -->
+	<select id="my_bo_list" resultType="app_board.BoardVO">
+		select *
+	from (select rownum num, b.*, (select name from member where email = b.writer) name
+			from (select * from board where writer=#{email}
+					order by no ) b
+			order by no desc)
+	where num between #{page.beginList} and #{page.endList}
+	
+	</select>
+	
+	<!-- 내가 쓴 글(공연홍보) 조회수 증가 -->
+	<update id="my_bo_read">
+		update board set readcnt = readcnt + 1
+		where no = ${no}
+	</update>
+	
+	<!-- 내가 쓴 글(공연홍보) 상세 정보 조회 -->
+	<select id="my_bo_detail" resultType="app_board.BoardVO">
+		select * from board where no = ${id}
+	</select>
+	
+	<!-- 내가 쓴 글(공연홍보) 수정 저장처리 -->
+	
+	<!-- 내가 쓴 글(공연홍보) 삭제처리 -->
+	
+	
+<!-- ////////////////////////////////////////////////////////////////////////  -->
+
+	<!-- 내가 쓴 글(커뮤니티) 전체 게시글 수 조회 -->
+	<select id="my_comm_total" resultType="integer">
+		select count(*) from community where writer=#{email}
+	</select>
+
+	<!-- 내가 쓴 글(커뮤니티) 페이징 처리 된 전체 게시글 조회 -->
+	<select id="my_comm_list" resultType="app_community.CommunityVO">
+		select *
+	from (select rownum no, b.*, (select name from member where email = b.writer) name
+			from (select * from community where writer=#{email}
+					order by id ) b
+			order by no desc)
+	where no between #{page.beginList} and #{page.endList}
+	
+	</select>
+	
+	<!-- 내가 쓴 글(커뮤니티) 조회수 증가 -->
+	<update id="my_comm_read">
+		update community set readcnt = readcnt + 1
+		where id = #{id}
+	</update>
+	
+	<!-- 내가 쓴 글(커뮤니티) 상세 정보 조회 -->
+	<select id="my_comm_detail" resultType="app_community.CommunityVO">
+	select b.*, (select name from member where member.email = b.writer) name
+	from community b
+	where id = #{id}
+	</select>
+	
+	<!-- 내가 쓴 글(커뮤니티) 수정 저장처리 -->
+	<update id="my_comm_update">
+	update community set title=#{title}, content = #{content}, subject=#{subject}
+			, filename1=#{filename1 , jdbcType=VARCHAR }, filepath1=#{filepath1, jdbcType=VARCHAR}
+			, filename2=#{filename2 , jdbcType=VARCHAR }, filepath2=#{filepath2, jdbcType=VARCHAR}
+			, filename3=#{filename3 , jdbcType=VARCHAR }, filepath3=#{filepath3, jdbcType=VARCHAR}
+	where id = #{id}		
+	</update>
+	
+	<!-- 내가 쓴 글(커뮤니티) 삭제처리 -->
+	<delete id="my_comm_delete">
+		delete from community
+		where id = #{id}
+	</delete>
+
+<!-- ////////////////////////////////////////////////////////////////////////  -->
+
+	<!-- 회원 유형별로 조회 -->
+
+	<!-- 전체 회원 수 조회 -->
+ 	<select id="totalList" resultType="integer">
+		select count(*) from member 
+
+	</select>
+
+	<!-- 전체 회원 목록 조회 -->
+ 	<select id="list" resultType="app_member.MemberVO">
+	select *
+	from member
+<!-- 	where no between #{beginList} and #{endList} -->
+	
+	
+	</select>  
+	
+	<select id="login_app_gw" resultType="app_member.MemberVO">
+		select * from member
+		where
+		email = #{email}
+		and PASSWORD = #{pw}
+	</select>
+
+	<select id="memberList_app_gw" resultType="app_member.MemberVO">
+		select * from member
+	</select>
+
+	<select id="id_check_app_gw" resultType="Integer">
+		select count(*) from
+		member where email= #{email}
+	</select>
+
+	<insert id="member_join_app_gw">
+		insert into member(email, password, name, nickname,
+		idnumber, address, filepath)
+		values(#{email}, #{password}, #{name},
+		#{nickname}, #{idnumber}, #{address} ,#{filepath, jdbcType=VARCHAR})
+	</insert>
+
+
+	<!-- 특정 회원정보 불러오기 -->
+	<select id="detail_mj" resultType="app_member.MemberVO">
+		select *
+		from member
+		where email = #{email}
+	</select>
+
+
+	<!-- 회원정보 수정 -->
+	<update id="update_mj">
+		update member set
+		nickname=#{nickname},
+		password=#{password}, address=#{address}, filepath=#{filepath,jdbcType=VARCHAR}
+		where email=#{email}
+	</update>
+
+
+	<!-- 로그인 (id, pw 일치 여부 조회) -->
+	<select id="member_login_mj" resultType="app_member.MemberVO">
+		select * from member
+		where email = #{email}
+		and password = #{password}
+	</select>
+
+	<!-- social_email 존재 여부 조회 (소셜 로그인 이력 조회) -->
+	<select id="social_email_mj" resultType="integer">
+		select count(*) from member
+		where ${social_type} = #{social_email}
+		<!-- ${social_type} 내 들어있는 동적 데이터 (즉, naver, kakao) 를 불어옴 -->
+	</select>
+
+	<update id="social_update_mj">
+		update member set name = #{name}, gender = #{gender}
+		where ${social_type} = #{social_email}
+	</update>
+
+
+	<insert id="social_insert_mj">
+		insert into member (email, name, ${social_type})
+		values ( #{email}, #{name}, #{social_email} )
+	</insert>
+
+	<select id="id_check_mj" resultType="integer">
+		select count(*) from member
+		where id = #{email}
+	</select>
+
+	<insert id="join_mj">
+		insert into member (nickname, password, address,
+		email, idnumber, name)
+		values ( #{nickname}, #{password}, #{address},
+		#{email}, #{idnumber}, #{name})
+	</insert>
+
+	<!-- 회원 삭제 -->
+	<delete id="delete">
+		delete from member where email = #{email}
+	</delete>
+</mapper>

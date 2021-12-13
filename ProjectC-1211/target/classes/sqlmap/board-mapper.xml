@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board.mapper">
+
+<update id="readcnt_es">
+         update board set readcnt = readcnt + 1
+      where no = #{no}
+   </update>
+	<delete id="board_clear_gw">
+		delete from board
+	</delete>
+	
+	<insert id="board_insert_gw">
+		insert into board(EVENTNM, OPAR, EVENTCO, EVENTSTARTDATE, EVENTENDDATE, EVENTSTARTTIME, EVENTENDTIME, CHRGEINFO, MNNST, AUSPCINSTT, PHONENUMBER, SUPRTINSTT, SEATNUMBER, ADMFEE, ENTNCAGE, DSCNTINFO, ATPN, HOMEPAGEURL, ADVANTKINFO, PRKPLCEYN, RDNMADR, LNMADR, LATITUDE, LONGITUDE, REFERENCEDATE)
+		values(#{eventNm}, #{opar}, #{eventCo}, #{eventStartDate}, #{eventEndDate}, #{eventStartTime}, #{eventEndTime}, #{chrgeInfo}, #{mnnst}, #{auspcInstt}, #{phoneNumber},
+			   #{suprtInstt}, #{seatNumber}, #{admfee}, #{entncAge}, #{dscntInfo}, #{atpn}, #{homepageUrl}, #{advantkInfo}, #{prkplceYn}, #{rdnmadr}, #{lnmadr}, #{latitude}, #{longitude}, #{referenceDate} )
+	</insert>
+	
+	<insert id="board_insert_es">
+		insert into board(eventnm, eventco, eventstartdate, eventenddate, eventstarttime, eventendtime, chrgeinfo, mnnst, auspcinstt, phonenumber, suprtinstt, seatnumber, admfee, entncage, dscntinfo, atpn, homepageurl, advantkinfo, prkplceyn, rdnmadr, filepath, writer, on_offline, referencedate, post_able)
+		values(#{eventnm, jdbcType=VARCHAR}, #{eventco, jdbcType=VARCHAR}, #{eventstartdate, jdbcType=VARCHAR}, #{eventenddate, jdbcType=VARCHAR}, #{eventstarttime, jdbcType=VARCHAR}, #{eventendtime, jdbcType=VARCHAR}, #{chrgeinfo, jdbcType=VARCHAR}, #{mnnst, jdbcType=VARCHAR}, #{auspcinstt, jdbcType=VARCHAR}, #{phonenumber, jdbcType=VARCHAR},
+			   #{suprtinstt, jdbcType=VARCHAR}, #{seatnumber, jdbcType=VARCHAR}, #{admfee, jdbcType=VARCHAR}, #{entncage, jdbcType=VARCHAR}, #{dscntinfo, jdbcType=VARCHAR}, #{atpn, jdbcType=VARCHAR}, #{homepageurl, jdbcType=VARCHAR}, #{advantkinfo, jdbcType=VARCHAR}, #{prkplceyn, jdbcType=VARCHAR}, #{rdnmadr, jdbcType=VARCHAR},#{filepath, jdbcType=VARCHAR}, #{writer}, #{on_offline}, sysdate, 2)
+	</insert>
+	
+	<update id="board_update_es">
+		update board set eventnm = #{eventnm, jdbcType=VARCHAR}, eventstartdate = #{eventstartdate, jdbcType=VARCHAR}, eventenddate = #{eventenddate, jdbcType=VARCHAR}, eventstarttime = #{eventstarttime, jdbcType=VARCHAR}, eventendtime = #{eventendtime, jdbcType=VARCHAR}, chrgeinfo = #{chrgeinfo, jdbcType=VARCHAR}, 
+			 mnnst = #{mnnst, jdbcType=VARCHAR}, auspcinstt = #{auspcinstt, jdbcType=VARCHAR}, phonenumber = #{phonenumber, jdbcType=VARCHAR}, suprtinstt = #{suprtinstt, jdbcType=VARCHAR}, seatnumber = #{seatnumber, jdbcType=VARCHAR}, admfee=#{admfee, jdbcType=VARCHAR}, entncage = #{entncage, jdbcType=VARCHAR}, dscntinfo = #{dscntinfo, jdbcType=VARCHAR}, atpn = #{atpn, jdbcType=VARCHAR}, 
+			 homepageurl = #{homepageurl, jdbcType=VARCHAR}, advantkinfo = #{advantkinfo, jdbcType=VARCHAR}, prkplceyn = #{prkplceyn, jdbcType=VARCHAR}, rdnmadr = #{rdnmadr, jdbcType=VARCHAR}, filepath = #{filepath, jdbcType=VARCHAR}, on_offline = #{on_offline, jdbcType=VARCHAR}
+		where no = #{no}
+	</update>
+	
+	<select id="board_list_gw" resultType="app_board.BoardVO">
+		select *
+		from (select rownum num, b.*, (select name from member where email = b.writer) name
+			from (select * from board <include refid="where_search" />
+					order by no) b
+			order by num desc)
+		where num between #{beginList} and #{endList}
+	</select>
+	<select id="board_select_one" resultType="app_board.BoardVO">
+		select *
+		from board
+		where no = #{no}
+	</select>
+	
+	<update id="board_read_gw">
+	update board set readcnt = readcnt + 1
+	where no = ${no}
+	</update>
+	
+	<select id="board_detail" resultType="app_board.BoardVO">
+		select * from board where no = ${id}
+	</select>
+	<select id="list_cnt_web_gw" resultType="Integer">
+		select count(*) from board <include refid="where_search" />
+	</select>
+	
+	<select id="all_gm" resultType="app_board.BoardVO">
+		select * 
+		from board
+		order by eventnm
+	</select>
+	
+	<select id="musical_gm" resultType="app_board.BoardVO">
+		select * 
+		from board
+		where eventco like '%뮤지컬%'
+		order by eventnm
+	</select>
+
+	<select id="opera_gm" resultType="app_board.BoardVO">
+		select * 
+		from board
+		where eventco like '%오페라%'
+		order by eventnm
+	</select>
+	
+	<select id="play_gm" resultType="app_board.BoardVO">
+		select * 
+		from board
+		where eventco like '%연극%'
+		or eventco like '%공연%'
+		or eventco like '%극%'
+		or eventco like '%발레%'
+		order by eventnm
+	</select>
+	
+	<select id="exhibition_gm" resultType="app_board.BoardVO">
+		select * 
+		from board
+		where eventco like '%전시회%'
+		or eventco like '%기념%'
+		or eventco like '%전%'
+		or eventco like '%화%'
+		or eventco like '%서예%'
+		order by eventnm
+	</select>
+	
+	<select id="concert_gm" resultType="app_board.BoardVO">
+		select * 
+		from board
+		where eventco like '%음악회%'
+		or eventco like '%음악%' 
+		or eventco like '%음%'
+		or eventco like  '%연주%'
+		or eventco like  '%악%'
+		or eventco like  '%가요%'
+		or eventco like  '%클래식%'
+		or eventco like  '%재즈%'
+		order by eventnm
+	</select>
+<!--추천 탭에 목록 가져오는 애들  -->
+	<!-- 조회순  -->
+	<select id="read_es" resultType="app_board.BoardVO">
+      select *
+      from board 
+      order by readcnt desc
+   </select>
+	<!--댓글순  -->   
+   <select id="review_es" resultType="app_board.BoardVO">
+      select distinct b.*, (select cnt from (select pno, count(*) cnt
+                        from boardcomments, board
+                        where pno = no
+                        group by pno) c 
+     					where pno = no) cnt
+		from board b, boardcomments
+		where b.no in (select pno from boardcomments)
+		order by cnt desc
+   </select>
+	<!--좋아요 순  -->   
+   <select id="favorite_es" resultType="app_board.BoardVO">
+     select distinct b.*, (select cnt from (select count(*) cnt, post_id_board from favorite f, board b where f.post_id_board= b.no group by post_id_board) c where c.post_id_board = b.no) cnt
+		from board b, favorite f
+		where b.no in (select post_id_board from favorite)
+		order by cnt desc
+   </select>
+   
+   <!-- 홍보글 하나 조회 -->
+   <select id="promo_one_es" resultType="app_board.BoardVO">
+   		select *
+   		from board
+   		where writer = #{email, jdbcType=VARCHAR}
+   </select>
+   
+   <!-- 홍보글 수정 -->
+   <update id="promo_update_es">
+   		update board set eventnm = #{eventnm}, eventstartdate = #{eventstartdate}, eventenddate = #{eventenddate}, eventstarttime = #{eventstarttime}, eventendtime = #{eventendtime},
+			 mnnst = #{mnnst}, auspcinstt = #{auspcinstt}, phonenumber = #{phonenumber}, suprtinstt = #{suprtinstt}, entncage = #{entncage}, atpn = #{atpn}, 
+			 prkplceyn = #{prkplceyn}, rdnmadr = #{rdnmadr}, filepath = #{filepath, jdbcType=VARCHAR}
+		where writer = #{writer}
+   </update>
+   <!-- 홍보글 삭제 -->
+   <delete id="board_delete_es">
+		delete from board
+		where no = #{no}
+	</delete>
+   
+<!--검색을 위한 단축어  -->
+   <sql id = 'where_search'>
+	<if test="search=='eventnm' or search=='eventco' ">
+		where ${search} like '%'|| #{keyword} || '%' 
+	</if>
+	<if test="search == 'writer' ">
+		where <include refid="search_writer" />		
+	</if>
+	<if test="search == 'all' ">
+		where eventnm like '%'|| #{keyword} ||'%'
+		or eventco like '%'|| #{keyword} ||'%'
+		or <include refid="search_writer" /> 
+		<!--  writer in ( select id from s_member where name like '%'|| #{keyword} ||'%' ) -->
+	</if>
+</sql>
+<sql id='search_writer'>
+	writer in ( select email from member where email like '%'|| #{keyword} ||'%' )
+</sql>
+</mapper>

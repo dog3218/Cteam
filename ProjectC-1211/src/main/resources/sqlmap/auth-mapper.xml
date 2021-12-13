@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="auth.mapper">
+
+
+
+
+<!-- 해당 글 인증 처리 -->
+<update id="member_type">
+	update member set type='producer'
+	where email = #{writer}
+	
+</update>
+
+<!-- 해당 글 인증 처리 -->
+<update id="check">
+	update producer_check set checked='Y'
+	where no=#{no}
+</update>
+
+<!-- 해당 글 삭제 -->
+<delete id="delete">
+	delete from producer_check
+	where no=#{no}
+</delete>
+
+
+
+
+<!-- 해당 글 수정 저장 처리 -->
+<update id="update">
+	update producer_check set title=#{title}, content = #{content}
+			, filename1=#{filename1 , jdbcType=VARCHAR }, filepath1=#{filepath1, jdbcType=VARCHAR}
+			, filename2=#{filename2 , jdbcType=VARCHAR }, filepath2=#{filepath2, jdbcType=VARCHAR}
+			, filename3=#{filename3 , jdbcType=VARCHAR }, filepath3=#{filepath3, jdbcType=VARCHAR}
+	where id = #{id}			
+
+</update>
+
+<!-- 해당 글 상세정보 조회 -->
+<select id="detail" resultType="web_auth.AuthVO">
+	select b.*, (select name from member where member.email = b.writer) name
+	from producer_check b
+	where id = #{id}
+
+</select>
+
+
+<!-- 기획자 인증 신규 글 저장 -->
+<insert id="insert">
+	insert into producer_check (title, content, writer, filename1)
+	values ( #{title}, #{content}, #{writer}
+			, #{filepath1 , jdbcType=VARCHAR })
+</insert>
+
+<sql id = 'where_search'>
+	<if test="search=='title' or search=='content' ">
+		where ${search} like '%'|| #{keyword} || '%' 
+	</if>
+	<if test="search == 'writer' ">
+		where <include refid="search_writer" />		
+	</if>
+	<if test="search == 'all' ">
+		where title like '%'|| #{keyword} ||'%'
+		or content like '%'|| #{keyword} ||'%'
+		or <include refid="search_writer" /> 
+		<!--  writer in ( select id from s_member where name like '%'|| #{keyword} ||'%' ) -->
+	</if>
+</sql>
+
+<sql id='search_writer'>
+	writer in ( select id from member where name like '%'|| #{keyword} ||'%' )
+</sql>
+
+
+<!-- 기획자 인증 글 전체 수 조회 ==> 관리자 only -->
+<select id="totalList" resultType="integer">
+	select count(*) from producer_check <include refid="where_search" />
+</select>
+
+
+<!-- 기획자 인증 글 전체 조회 ==> 관리자 only -->
+<select id="list" resultType="web_auth.AuthVO">
+select *
+   from (select rownum num, b.*, (select name from member where email = b.writer) name
+         from (select * from producer_check pc 
+               order by pc.no ) b
+         order by b.no desc) 
+   where num between #{beginList} and #{endList}
+</select>
+
+<select id="my_list" resultType="web_auth.AuthVO">
+   select *
+   from producer_check
+   where writer = #{email}
+</select>
+
+<select id="auth_list_es" resultType="app_auth.AuthVO">
+   select p.*
+   from producer_check p
+</select>
+
+<select id="auth_one_es" resultType="app_auth.AuthVO">
+	select no, content, writer, writedate, title, checked, filename1 as filenam1
+	from producer_check
+	where writer = #{email}
+</select>
+
+<update id="auth_update_es">
+	update producer_check set filename1=#{filenam1, jdbcType=VARCHAR}
+	where writer = #{writer}
+	
+</update>
+
+</mapper>

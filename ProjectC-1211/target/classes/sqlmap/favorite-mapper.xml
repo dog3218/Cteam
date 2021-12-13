@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="app_favorite.mapper">
+	<!--커뮤니티 글 들어갈 때 좋아요 되있는지 확인 -->
+    <select id ="community_Favorite_check_jy" resultType="app_favorite.FavoriteCommunityVO" >
+         select *
+       from community c full outer join favorite f
+       on c.id = f.post_id_community
+       where f.post_id_community = #{post_id_community}
+   </select>
+  
+  <!--  내가 공연 정보 좋아하는 지 확인하는 맵퍼 -->
+   <select id ="info_Favorite_check_jy" resultType ="app_favorite.FavoriteBoardVO">
+   		select  *
+		from board b full outer join favorite f
+		on b.no = f.post_id_board
+		where f.post_id_board = #{post_id_board}
+   
+   </select>
+   <!--  얘는 안바꿔도 되는 것 -->
+   <!--  내가 좋아하는 공연 정보 불러오는 것 -->
+   <select id ="my_favorite_board_jy" resultType ="app_board.BoardVO">
+   		select *
+		from board
+		where no in (select post_id_board from favorite where likemember = #{likemember ,  jdbcType=VARCHAR})
+   
+   </select>
+   <!--  얘는 안바꿔도 되는 것 -->
+   <!--  내가 좋아요 누른 커뮤니티 정보 불러오는 것 -->
+   <select id ="my_favorite_community_jy" resultType ="app_community.CommunityVO">
+   		select *
+		from community
+		where id in (select post_id_community from favorite where likemember = #{likemember ,  jdbcType=VARCHAR})
+   
+   </select>
+   
+   
+   <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+   <!--  내가 좋아하는 공연 정보 제거 하는 것 -->
+   <delete id ="delete_my_favorite_board_jy">
+         delete from favorite 
+         where likemember=#{likemember ,  jdbcType=VARCHAR } 
+         and post_id_board = #{post_id_board ,  jdbcType=VARCHAR } 
+         
+   </delete>
+   
+   <!--  내가 좋아하는 커뮤니티 정보 제거하는 것 -->
+   <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+   <delete id ="delete_my_favorite_community_jy">
+         delete from favorite 
+         where likemember=#{likemember ,  jdbcType=VARCHAR } 
+         and post_id_community = #{post_id_community ,  jdbcType=VARCHAR } 
+         
+   </delete>
+   <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+   <!--  내가 좋아요 한 정보 추가하는 것 -->
+   <insert id = "insert_my_favorite_board_jy">
+   
+       
+         insert into favorite (likemember, post_id_board, post_id_community, target_type, no) 
+         values (#{likemember ,  jdbcType=VARCHAR}, #{post_id_board, jdbcType=VARCHAR }, #{post_id_community, jdbcType=VARCHAR },  #{target_type ,  jdbcType=VARCHAR} , seq_favorite.nextval )
+   </insert>
+   
+   <insert id = "insert_my_favorite_community_jy">
+   
+       
+         insert into favorite (likemember, post_id_board, post_id_community, target_type, no) 
+         values (#{likemember ,  jdbcType=VARCHAR}, #{post_id_board, jdbcType=VARCHAR }, #{post_id_community, jdbcType=VARCHAR },  #{target_type ,  jdbcType=VARCHAR} , seq_favorite.nextval )
+   </insert>
+   
+</mapper>

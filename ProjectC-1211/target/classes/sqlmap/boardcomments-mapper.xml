@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="app_boardcomments.mapper">
+  <select id="board_comment_select_jy" resultType= "app_board_comment.Board_CommentVO">
+  	select b.*, (select nickname from member where member.email = b.writer) nickname
+	from boardcomments b
+  	where b.pno = #{pno}
+  </select>
+  
+  <insert id = "board_comment_insert_jy">
+  	insert into boardcomments ( content, writer, pno) 
+  	values ( #{content}, #{writer},  ,#{pno } )
+  </insert>
+   
+   <delete id ="board_comment_delete_jy">
+   	delete from boardcomments
+   	where writer = #{writer}
+   	and pno = #{pno}
+   </delete>
+</mapper>
